@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
 
     private bool onGround;
+    private bool isMoving;
     private Rigidbody2D body;
 
     private void Awake()
@@ -39,10 +40,12 @@ public class PlayerController : MonoBehaviour
         if (horizontalInput != 0)
         {
             body.velocity = new Vector2(horizontalInput * moveSpeed, body.velocity.y);
+            isMoving = true;
         }
         else
         {
             body.velocity = new Vector2(body.velocity.x * dragScale * Time.deltaTime, body.velocity.y);
+            isMoving = false;
         }
 
 
@@ -63,5 +66,9 @@ public class PlayerController : MonoBehaviour
         {
             spriteObject.GetComponent<SpriteRenderer>().flipX = true;
         }
+
+        //process animation flags
+
+        spriteObject.GetComponent<Animator>().SetBool("isMoving", isMoving);
     }
 }
