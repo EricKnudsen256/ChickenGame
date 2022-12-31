@@ -23,10 +23,17 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        UpdateInput();
+        UpdateAnimFlags();
+
+    }
+
+    private void UpdateInput()
+    {
         float horizontalInput = Input.GetAxis("Horizontal");
         float jump = Input.GetAxis("Jump");
 
-        if(body.velocity.y == 0)
+        if (body.velocity.y == 0)
         {
             onGround = true;
         }
@@ -50,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
 
         //process jump input
-        if(jump > 0 && onGround)
+        if (jump > 0 && onGround)
         {
             body.AddForce(new Vector2(0, jumpForce));
         }
@@ -58,7 +65,7 @@ public class PlayerController : MonoBehaviour
 
 
         //flip sprite on direction change
-        if(horizontalInput > 0)
+        if (horizontalInput > 0)
         {
             spriteObject.GetComponent<SpriteRenderer>().flipX = false;
         }
@@ -66,9 +73,10 @@ public class PlayerController : MonoBehaviour
         {
             spriteObject.GetComponent<SpriteRenderer>().flipX = true;
         }
+    }
 
-        //process animation flags
-
+    private void UpdateAnimFlags()
+    {
         spriteObject.GetComponent<Animator>().SetBool("isMoving", isMoving);
     }
 }
