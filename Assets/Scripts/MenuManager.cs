@@ -18,6 +18,9 @@ public class MenuManager : MonoBehaviour
     public GameObject GameFailText;
     public TMP_Text GameNameInput;
 
+    private GameManager manager;
+    private LobbyManager lobbyManager;
+
     public static MenuManager GetMenuManager()
     {
         return menuManager;
@@ -41,7 +44,14 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-
+        if (!manager)
+        {
+            manager = GameManager.GetManager();
+        }
+        if(!lobbyManager)
+        {
+            lobbyManager = manager.GetLobbyManager();
+        }
     }
 
     public void OnSingleplayerPress()
@@ -77,6 +87,10 @@ public class MenuManager : MonoBehaviour
             GameFailText.SetActive(true);
 
             GameFailText.GetComponent<TMP_Text>().text = "Must Enter A Name";
+        }
+        else
+        {
+            lobbyManager.HostGame(inputName);
         }
     }
 

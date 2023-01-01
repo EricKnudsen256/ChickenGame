@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using Photon.Pun;
-
 public class GameManager : MonoBehaviour
 {
 
@@ -25,6 +23,7 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
+        lobbyManager.ConenctToOnline();
     }
 
 
@@ -39,5 +38,15 @@ public class GameManager : MonoBehaviour
         {
             lobbyManager = LobbyManager.GetLobbyManager();
         }
+    }
+
+    public LobbyManager GetLobbyManager()
+    {
+        return lobbyManager;
+    }
+
+    public MenuManager GetMenuManager()
+    {
+        return menuManager;
     }
 }

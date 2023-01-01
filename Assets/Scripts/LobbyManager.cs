@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LobbyManager : MonoBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+
+public class LobbyManager : MonoBehaviourPunCallbacks
 {
 
     public static LobbyManager lobbyManager;
@@ -16,6 +19,14 @@ public class LobbyManager : MonoBehaviour
         {
             lobbyManager = this;
         }
+
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Awake()
+    {
+
+        PhotonNetwork.AutomaticallySyncScene = true;
     }
 
     public static LobbyManager GetLobbyManager()
@@ -23,13 +34,45 @@ public class LobbyManager : MonoBehaviour
         return lobbyManager;
     }
 
-    public void HostGame()
+    public void HostGame(string gameName)
     {
-
+        if (PhotonNetwork.IsConnected)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.IsVisible = true;
+            roomOptions.MaxPlayers = 4;
+            PhotonNetwork.CreateRoom(gameName, roomOptions, TypedLobby.Default);
+        }
+        else
+        {
+            Debug.Log("Not connected to online service");
+        }
     }
 
-    public void JoinGame()
+    public void JoinGame(string gameName)
     {
-
+        if (PhotonNetwork.IsConnected)
+        {
+            PhotonNetwork.JoinRoom(gameName);
+        }
+        else
+        {
+            Debug.Log("Not connected to online service");
+        }
     }
+
+    public void ConenctToOnline()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.GameVersion = gameVersion;
+    }
+
+    public override void OnCreatedRoom()
+    {
+        //Go to lobby screen
+
+        PhotonNetwork.LoadLevel("LobbyMenu");
+        
+    }
+
 }
