@@ -75,4 +75,26 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         
     }
 
+    public void ChangeName(string newName)
+    {
+        if(string.IsNullOrEmpty(newName))
+        {
+            return;
+        }
+
+        photonView.Owner.NickName = newName;
+    }
+
+    public string GetName()
+    {
+
+        return photonView.Owner.NickName;
+    }
+
+    public bool CheckConnection()
+    {
+
+        return PhotonNetwork.IsConnected;
+    }
+
 }
